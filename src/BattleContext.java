@@ -22,4 +22,8 @@ public class BattleContext {
     public BattleLog getLog() {
         return log;
     }
+
+    public BattleContext reverse() {
+        return new BattleContext(defender, attacker, round, log);
+    }
 }
