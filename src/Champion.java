@@ -75,8 +75,11 @@ public abstract class Champion {
         List<BattleModifier> attackerModifiers = context.attacker.getLoadout().getActiveModifiers();
         for (BattleModifier mod : attackerModifiers) {
             if (!mod.isExpired()) {
-                modifiedDamage = mod.modifyAttack(modifiedDamage, context);
-                mod.effectUsed();
+                int prevDamage = modifiedDamage;
+                modifiedDamage = mod.modifyAttack(prevDamage, context);
+                if (modifiedDamage != prevDamage) {
+                    mod.effectUsed();
+                }
             }
         }
     
@@ -84,8 +87,11 @@ public abstract class Champion {
         List<BattleModifier> defenderModifiers = context.defender.getLoadout().getActiveModifiers();
         for (BattleModifier mod : defenderModifiers) {
             if (!mod.isExpired()) {
-                modifiedDamage = mod.modifyDefense(modifiedDamage, context);
-                mod.effectUsed();
+                int prevDamage = modifiedDamage;
+                modifiedDamage = mod.modifyDefense(prevDamage, context);
+                if (modifiedDamage != prevDamage) {
+                    mod.effectUsed();
+                }
             }
         }
     
