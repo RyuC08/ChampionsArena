@@ -77,8 +77,8 @@ public abstract class Champion {
     }
 
     /**
-     * Apply damage to the Champion's health. The damage is modified by the attacker's attack power
-     * and the defender's defense power, and then modified by any active modifiers.
+     * Apply damage to the Champion's health. The damage is modified by the wielder's attack power
+     * and the enemy's defense power, and then modified by any active modifiers.
      * The damage is clamped to be between 1 and 25.
      * @param baseDamage The base damage to apply
      * @param context The context of the battle, including the weilder of the attack and enemy the attack is against
@@ -87,13 +87,13 @@ public abstract class Champion {
     public final int takeDamage(int baseDamage, BattleContext context) {
         int modifiedDamage = baseDamage;
 
-        // Apply attacker's attackPower
+        // Apply wielder's attackPower
         modifiedDamage += context.wielder.getAttackPower();
 
-        // Apply defender's defensePower
+        // Apply enemy's defensePower
         modifiedDamage -= context.enemy.getDefensePower();
 
-        // Step 1: Attacker's modifiers modify the damage
+        // Step 1: wielder's modifiers modify the damage
         List<BattleModifier> attackerModifiers = context.wielder.getLoadout().getActiveModifiers();
         for (BattleModifier mod : attackerModifiers) {
             if (!mod.isExpired()) {
@@ -106,7 +106,7 @@ public abstract class Champion {
             }
         }
     
-        // Step 2: Defender's modifiers modify the damage
+        // Step 2: enemy's modifiers modify the damage
         List<BattleModifier> defenderModifiers = context.enemy.getLoadout().getActiveModifiers();
         for (BattleModifier mod : defenderModifiers) {
             if (!mod.isExpired()) {

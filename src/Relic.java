@@ -16,32 +16,4 @@ public abstract class Relic extends BattleModifier {
     public Relic(String name, String description, int maxUses) {
         super(name, description, maxUses);
     }
-
-    /**
-     * Modify the attack power of a champion. This method is called when the
-     * champion attacks. The base damage is passed in, and the method should
-     * return the modified damage (if any). The default implementation does 
-     * not modify the damage.
-     * @param baseDamage The base damage being dealt.
-     * @param context The context of the battle, including the attacker and defender.
-     * @return The modified damage.
-     */
-    @Override
-    public int modifyAttack(int baseDamage, BattleContext context) {
-        return baseDamage; // default: no effect
-    }
-
-    /**
-     * Modify the defense power of a champion. This method is called when the
-     * champion defends. The base damage is passed in, and the method should
-     * return the modified damage (if any). The default implementation does
-     * not modify the damage.
-     * @param baseDamage The base damage being dealt.
-     * @param context The context of the battle, including the attacker and defender.
-     * @return The modified damage.
-     */
-    @Override
-    public int modifyDefense(int baseDamage, BattleContext context) {
-        return baseDamage; // default: no effect
-    }
 }

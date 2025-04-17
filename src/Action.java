@@ -57,12 +57,12 @@ public abstract class Action {
      * Executes the action in the context of a battle.
      * This method must be overridden by subclasses to define the specific
      * behavior of the action.
-     * @param context The context of the battle, including the attacker and defender.
+     * @param context The context of the battle, including the wielder and enemy.
      *                This context provides information about the current state of
      *                the battle and allows for interaction with the battle log.
      *                The context is passed to the action to allow it to modify
      *                the battle state, such as applying damage or effects to
-     *                the attacker or defender.
+     *                the wielder or enemy.
      */
     public abstract void execute(BattleContext context);
 }

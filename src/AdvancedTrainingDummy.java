@@ -43,7 +43,7 @@ class Jab extends Action {
     /**
      * Executes the Jab action.
      * This action deals 5 damage to the opponent.
-     * @param context The context of the battle, including the attacker and defender.
+     * @param context The context of the battle, including the wielder and enemy.
      */
     @Override
     public void execute(BattleContext context) {
@@ -59,7 +59,7 @@ class Jab extends Action {
 
 // Action 2: Brace — no damage, provides a defensive buff
 // This action allows the AdvancedTrainingDummy to brace itself, reducing damage from the next attack.
-// It adds a temporary modifier to the attacker's loadout that reduces damage by 5 for one attack.
+// It adds a temporary modifier to the wielder's loadout that reduces damage by 5 for one attack.
 class Brace extends Action {
     public Brace() {
         super("Brace");
@@ -67,8 +67,8 @@ class Brace extends Action {
 
     /**
      * Executes the Brace action.
-     * This action provides a defensive buff to the attacker, reducing damage taken by 5 for one attack.
-     * @param context The context of the battle, including the attacker and defender.
+     * This action provides a defensive buff to the wielder, reducing damage taken by 5 for one attack.
+     * @param context The context of the battle, including the wielder and enemy.
      */
     @Override
     public void execute(BattleContext context) {
@@ -93,7 +93,7 @@ class WindUpSlam extends Action {
     /**
      * Executes the Wind-Up Slam action.
      * This action deals 20 damage to the opponent after charging for 1 turn.
-     * @param context The context of the battle, including the attacker and defender.
+     * @param context The context of the battle, including the wielder and enemy.
      */
     @Override
     public void execute(BattleContext context) {
@@ -121,7 +121,7 @@ class BraceBuff extends TemporaryModifier {
      * This method modifies the attack damage by reducing it by 5.
      * It is called when the wielder is defending against an attack.
      * @param baseDamage The base damage of the attack.
-     * @param context The context of the battle, including the attacker and defender.
+     * @param context The context of the battle, including the wielder and enemy.
      * @return The modified damage after applying the buff.
      */
     @Override
@@ -144,7 +144,7 @@ class PoisonDart extends Action {
      * Executes the Poison Dart action.
      * This action deals 1 damage to the opponent and applies a poison effect that reduces healing by 50% for
      * 5 turns and deals 1 damage at the end of each turn.
-     * @param context The context of the battle, including the attacker and defender.
+     * @param context The context of the battle, including the wielder and enemy.
      */
     @Override
     public void execute(BattleContext context) {
@@ -174,7 +174,7 @@ class PoisonEffect extends TemporaryModifier {
      * This method modifies the healing amount by reducing it by 50%.
      * It is called when the wielder is healing.
      * @param baseHeal The base healing amount.
-     * @param context The context of the battle, including the attacker and defender.
+     * @param context The context of the battle, including the wielder and enemy.
      * @return The modified healing after applying the poison effect.
      */
     @Override
@@ -184,7 +184,7 @@ class PoisonEffect extends TemporaryModifier {
 
     /**
      * This method is called at the end of each turn to apply the poison damage.
-     * It deals 1 damage to the defender and logs the action.
+     * It deals 1 damage to the enemy and logs the action.
      * @param context The context of the battle, including the wielder (who is poisoned) and enemy.
      */
     @Override
