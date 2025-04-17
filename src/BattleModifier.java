@@ -72,7 +72,9 @@ public abstract class BattleModifier {
      * @param context The context of the battle, including the attacker and defender
      * @return The modified damage
      */
-    public abstract int modifyAttack(int baseDamage, BattleContext context);
+    public int modifyAttack(int baseDamage, BattleContext context) {
+        return baseDamage;
+    };
 
     /**
      * Called when a defense is made. This method should modify the base damage
@@ -83,5 +85,7 @@ public abstract class BattleModifier {
      * @param context The context of the battle, including the attacker and defender
      * @return The modified damage
      */
-    public abstract int modifyDefense(int baseDamage, BattleContext context);
+    public int modifyDefense(int baseDamage, BattleContext context) {
+        return baseDamage;
+    };
 }

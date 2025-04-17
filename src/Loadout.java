@@ -5,6 +5,7 @@ public class Loadout {
     private Tactic tactic;
     private Relic relic;
     private Gambit pocketedGambit;
+    private final List<BattleModifier> temporaryModifiers = new ArrayList<>();
 
     public Loadout() {
         this.tactic = null;
@@ -48,6 +49,10 @@ public class Loadout {
         return swapPocketedGambit(null);
     }
 
+    public void addTemporaryModifier(BattleModifier mod) {
+        temporaryModifiers.add(mod);
+    }
+
     // --- Modifier Pipeline ---
     public List<BattleModifier> getActiveModifiers() {
         List<BattleModifier> active = new ArrayList<>();
@@ -64,7 +69,34 @@ public class Loadout {
         if (pocketedGambit != null && pocketedGambit.isActivated() && !pocketedGambit.isExpired()) {
             active.add(pocketedGambit);
         }
+
+        active.addAll(temporaryModifiers);
     
         return active;
     }
+
+    /**
+     * End the turn by removing expired modifiers and clearing temporary
+     * modifiers. This method should be called at the end of each turn to
+     * ensure that the loadout is ready for the next turn. 
+     */
+    public void endTurn() {
+        // Remove expired modifiers
+        if (tactic != null && tactic.isExpired()) {
+            tactic = null;
+        }
+    
+        if (relic != null && relic.isExpired()) {
+            relic = null;
+        }
+    
+        // Only include the gambit if it is activated
+        if (pocketedGambit != null && pocketedGambit.isExpired()) {
+            pocketedGambit = null;
+        }
+
+        // Clear temporary modifiers
+        temporaryModifiers.removeIf(BattleModifier::isExpired);
+    }
+
 }

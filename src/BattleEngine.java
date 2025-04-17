@@ -64,6 +64,9 @@ public class BattleEngine {
                 actionB.execute(context2);
             }
 
+            champA.getLoadout().endTurn();
+            champB.getLoadout().endTurn();
+
             // Print out the round log
             Arrays.stream(log.getLog())
                   .filter(e -> e.round == round)

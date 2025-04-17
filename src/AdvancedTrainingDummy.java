@@ -39,6 +39,8 @@ public class AdvancedTrainingDummy extends Champion {
 
         @Override
         public void execute(BattleContext context) {
+            context.attacker.getLoadout().addTemporaryModifier(new BraceBuff());
+
             context.getLog().addEntry(
                 context.attacker, null, getName(),
                 context.attacker.getName() + " braces defensively.",
@@ -65,4 +67,14 @@ public class AdvancedTrainingDummy extends Champion {
         }
     }
     
+    private static class BraceBuff extends TemporaryModifier {
+        public BraceBuff() {
+            super("Brace Buff", "Increases defense by 5 for one attack.", 1);
+        }
+    
+        @Override
+        public int modifyDefense(int baseDamage, BattleContext context) {
+            return baseDamage - 5;
+        }
+    }
 }

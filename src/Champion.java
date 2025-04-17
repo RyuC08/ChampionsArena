@@ -74,13 +74,19 @@ public abstract class Champion {
         // Step 1: Attacker's modifiers modify the damage
         List<BattleModifier> attackerModifiers = context.attacker.getLoadout().getActiveModifiers();
         for (BattleModifier mod : attackerModifiers) {
-            modifiedDamage = mod.modifyAttack(modifiedDamage, context);
+            if (!mod.isExpired()) {
+                modifiedDamage = mod.modifyAttack(modifiedDamage, context);
+                mod.effectUsed();
+            }
         }
     
         // Step 2: Defender's modifiers modify the damage
         List<BattleModifier> defenderModifiers = context.defender.getLoadout().getActiveModifiers();
         for (BattleModifier mod : defenderModifiers) {
-            modifiedDamage = mod.modifyDefense(modifiedDamage, context);
+            if (!mod.isExpired()) {
+                modifiedDamage = mod.modifyDefense(modifiedDamage, context);
+                mod.effectUsed();
+            }
         }
     
         // Step 3: Clamp and apply damage
@@ -130,6 +136,7 @@ public abstract class Champion {
 
     // --- Getters ---
     public String getName() { return name; }
+    public int getMaxHealth() { return maxHealth; }
     public int getCurrentHealth() { return currentHealth; }
     public int getAttackPower() { return attackPower; }
     public int getDefensePower() { return defensePower; }
