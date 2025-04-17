@@ -6,6 +6,11 @@ import java.util.concurrent.CompletableFuture;
 public class ChampionsArena {
 
     public static void main(String[] args) {
+        if (args.length < 1) {
+            System.err.println("Usage: java ChampionsArena <controller_type>");
+            System.err.println("Available controller types: console, gui, web");
+            return;
+        }
 
         ChampionController controller = switch(args[0]) {
             case "console" -> new ConsoleChampionController();
@@ -15,16 +20,18 @@ public class ChampionsArena {
         };
 
         List<Class<? extends Champion>> championClasses = loadChampionClasses("arena/");
+        championClasses.add(TrainingDummy.class);
+        championClasses.add(AdvancedTrainingDummy.class);
 
         if (championClasses.size() < 2) {
             System.err.println("Not enough Champions found to run a battle.");
             return;
         }
 
-        ModifierVault vault = new ModifierVault("arena/");
+        ModifierVault vault = ModifierVault.initialize("arena/");
 
-        CompletableFuture<Champion> playerOneFuture = controller.chooseChampion(championClasses);
-        CompletableFuture<Champion> playerTwoFuture = controller.chooseChampion(championClasses);
+        CompletableFuture<Champion> playerOneFuture = controller.chooseChampion("Player 1", championClasses);
+        CompletableFuture<Champion> playerTwoFuture = controller.chooseChampion("Player 2", championClasses);
 
         Champion playerOne = playerOneFuture.join();
         Champion playerTwo = playerTwoFuture.join();

@@ -8,13 +8,13 @@ public class GuiChampionController implements ChampionController {
     }
 
     @Override
-    public CompletableFuture<Champion> chooseChampion(List<Class<? extends Champion>> availableChampions) {
+    public CompletableFuture<Champion> chooseChampion(String playerName, List<Class<? extends Champion>> availableChampions) {
         // Implementation for console input to choose a champion
         return CompletableFuture.completedFuture(null);
     }
 
     @Override
-    public CompletableFuture<TurnSubmission> takeTurn(Champion self, Champion opponent, ModifierVault vault) {
+    public CompletableFuture<TurnSubmission> planTurn(Champion self, Champion opponent, ModifierVault vault) {
         // Implementation for console input to take a turn
         return CompletableFuture.completedFuture(null);
     }

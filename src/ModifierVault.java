@@ -1,4 +1,5 @@
 import java.util.List;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -13,10 +14,45 @@ public class ModifierVault {
     private final List<Class<? extends BattleModifier>> registry = new ArrayList<>();
     private final Random random = new Random();
 
+    private static ModifierVault instance;
+
+    /**
+     * Get the singleton instance of the ModifierVault.
+     * @return The instance of ModifierVault.
+     * @throws IllegalStateException if the vault has not been initialized.
+     */
+    public static ModifierVault getInstance() {
+        if (instance == null) {
+            throw new IllegalStateException("ModifierVault has not been initialized yet.");
+        }
+        return instance;
+    }
+
+    /**
+     * Initialize the vault loading the modifiers from a specified path. If no path is provided,
+     * it will initialize with only default modifiers.
+     * @param folderPath The path to the directory containing the modifier classes. 
+     *                   If null or empty, only default modifiers will be loaded.
+     * @throws IllegalStateException if the vault has already been initialized.
+     * @throws IllegalArgumentException if the folderPath is invalid.
+     */
+    public static ModifierVault initialize(String folderPath) {
+        if (instance != null) {
+            throw new IllegalStateException("ModifierVault has already been initialized.");
+        }
+        if (folderPath == null || folderPath.isEmpty()) {
+            instance = new ModifierVault();
+        }
+        else {
+            instance = new ModifierVault(folderPath);
+        }
+        return instance;
+    }
+
     /**
      * Initialize the vault with default modifiers.
      */
-    public ModifierVault() {
+    private ModifierVault() {
         // Initialize the vault with default modifiers
         // registry.add(MyModifier.class);
     }
@@ -24,19 +60,20 @@ public class ModifierVault {
     /**
      * Initialize the vault with default modifiers and modifiers from a specified path.
      * @param modifierPath The path to the directory containing the modifier classes.
+     * @throws IllegalArgumentException if the path is invalid.
      */
-    public ModifierVault(String modifierPath) {
+    private ModifierVault(String modifierPath) {
 
         // Initialize the pool with default modifiers
         this();
 
         if (modifierPath != null && !modifierPath.isEmpty()) {
             try {
-                DynamicClassLoader classLoader = new DynamicClassLoader("path/to/your/classes");
+                DynamicClassLoader classLoader = new DynamicClassLoader(modifierPath);
                 List<Class<? extends BattleModifier>> classes = classLoader.getSubtypesOf(BattleModifier.class);
                 registry.addAll(classes);
             } catch (Exception e) {
-                System.err.println("Failed to load modifiers: " + e.getMessage());
+                throw new IllegalArgumentException("Invalid path: " + modifierPath, e);
             }
         }
     }

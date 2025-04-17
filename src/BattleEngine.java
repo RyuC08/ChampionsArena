@@ -26,7 +26,7 @@ public class BattleEngine {
             round, BattleLog.EntryType.INFO);
 
         while (champA.isAlive() && champB.isAlive()) {
-            log.addEntry(null, null, "Round " + round, "⚔️ Round " + round + " begins!", round, BattleLog.EntryType.INFO);
+            log.addEntry(null, null, "Round " + round, "⚔️  Round " + round + " begins! ⚔️", round, BattleLog.EntryType.INFO);
 
             // Get TurnSubmissions from both players
             CompletableFuture<TurnSubmission> submissionA = getTurnSubmission(champA, champB);
@@ -45,26 +45,24 @@ public class BattleEngine {
 
             Champion first = aFirst ? champA : champB;
             Champion second = aFirst ? champB : champA;
-            TurnSubmission firstTurn = aFirst ? turnA : turnB;
-            TurnSubmission secondTurn = aFirst ? turnB : turnA;
 
             // Execute both actions
             BattleContext context1 = new BattleContext(first, second, round, log);
             BattleContext context2 = context1.reverse();
 
+            // Charge any charging actions
+            Action actionA = first.advanceCharge();
+            Action actionB = second.advanceCharge();
+
             // Execute the first champion's action
-            if (firstTurn.selectedAction != null) {
-                firstTurn.selectedAction.execute(context1);
+            if (actionA != null) {
+                actionA.execute(context1);
             }
 
             // Execute the second champion's action if the first champion didn't kill the second
-            if (second.isAlive() && secondTurn.selectedAction != null) {
-                secondTurn.selectedAction.execute(context2);
+            if (second.isAlive() && actionB != null) {
+                actionB.execute(context2);
             }
-
-            // Charge any charging actions
-            champA.advanceCharge();
-            champB.advanceCharge();
 
             // Print out the round log
             Arrays.stream(log.getLog())
@@ -76,11 +74,11 @@ public class BattleEngine {
 
         String winner = champA.isAlive() ? champA.getName() : champB.getName();
         log.addEntry(null, null, "Victory", winner + " wins the match!", round, BattleLog.EntryType.INFO);
-        System.out.println("\n🏆 " + winner + " is victorious!");
+        System.out.println("\n🏆 " + winner + " is victorious! 🏆");
     }
 
     private CompletableFuture<TurnSubmission> getTurnSubmission(Champion self, Champion opponent) {
-        return controller.takeTurn(self, opponent, vault);
+        return controller.planTurn(self, opponent, vault);
     }
 
     private void applyLoadoutChanges(Champion champ, TurnSubmission turn) {
@@ -103,6 +101,11 @@ public class BattleEngine {
         if (turn.discardSlot != null) {
             champ.getArsenal().discard(turn.discardSlot);
             champ.getArsenal().draw();
+        }
+
+        if (turn.selectedAction != null) {
+            champ.lockInAction(turn.selectedAction);
+            champ.startCharging();
         }
     }
 }

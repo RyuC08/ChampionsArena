@@ -14,15 +14,33 @@ public abstract class Champion {
     private Action lockedInAction;
     private boolean isCharging;
     private int chargeTurnsRemaining;
+    private static final int MAX_STAT_TOTAL = 10;
 
-    public Champion(String name, int attackPower, int defensePower, int maxHealth, ModifierVault vault) {
+    /**
+     * Create a Champion with the given stats. The champion's maxHealth can be at most 100.
+     * The Champion's attackPower and defensePower must add up to at most MAX_STAT_TOTAL (10).
+     * 
+     * @param name The Champion's name
+     * @param attackPower The Champion's attack power
+     * @param defensePower The Champion's defense power
+     * @param maxHealth The Champion's maximum health
+     */
+    public Champion(String name, int attackPower, int defensePower, int maxHealth) {
         this.name = name;
+        
+        if (attackPower + defensePower > MAX_STAT_TOTAL) {
+            throw new IllegalArgumentException("Attack + Defense cannot exceed " + MAX_STAT_TOTAL);
+        }
+
         this.attackPower = attackPower;
         this.defensePower = defensePower;
+
+        // Clamp maxHealth to be between 1 and 100
+        maxHealth = Math.max(1, Math.min(maxHealth, 100));        
         this.maxHealth = maxHealth;
         this.currentHealth = maxHealth;
 
-        this.arsenal = new Arsenal(vault);  // Pulls 5 from vault
+        this.arsenal = new Arsenal();
         this.loadout = new Loadout();
         this.isCharging = false;
         this.chargeTurnsRemaining = 0;
@@ -30,13 +48,14 @@ public abstract class Champion {
 
     // --- Abstract methods students must implement ---
     public abstract List<Action> getActions();
-    public abstract String getBattleCry();
 
     // --- Action selection ---
     public void lockInAction(Action action) {
-        this.lockedInAction = action;
-        this.isCharging = false;
-        startCharging();
+        if (this.lockedInAction == null) {
+            this.lockedInAction = action;
+            this.isCharging = false;
+            startCharging();
+        }
     }
 
     public Action getLockedInAction() {
@@ -46,7 +65,12 @@ public abstract class Champion {
     // --- Damage pipeline ---
     public final int takeDamage(int baseDamage, BattleContext context) {
         int modifiedDamage = baseDamage;
-    
+        // Apply attacker's attackPower
+        modifiedDamage += context.attacker.getAttackPower();
+
+        // Apply defender's defensePower
+        modifiedDamage -= context.defender.getDefensePower();
+
         // Step 1: Attacker's modifiers modify the damage
         List<BattleModifier> attackerModifiers = context.attacker.getLoadout().getActiveModifiers();
         for (BattleModifier mod : attackerModifiers) {
@@ -80,19 +104,28 @@ public abstract class Champion {
     }
 
     public void startCharging() {
-        if (this.lockedInAction.needsCharging() && !isCharging) {
+        if (lockedInAction != null && lockedInAction.needsCharging() && !isCharging) {
             isCharging = true;
-            chargeTurnsRemaining = this.lockedInAction.getChargeTurns();
+            chargeTurnsRemaining = lockedInAction.getChargeTurns();
         }
     }
 
-    public void advanceCharge() {
-        if (isCharging) {
+    public Action advanceCharge() {
+        if (chargeTurnsRemaining > 0) {
             chargeTurnsRemaining--;
-            if (chargeTurnsRemaining <= 0) {
-                isCharging = false;
-            }
+            System.out.println(getName() + " is charging (" + chargeTurnsRemaining + " turns left)");
+            return new ChargingAction();
         }
+
+        Action action = lockedInAction;
+        lockedInAction = null;
+        isCharging = false;
+        chargeTurnsRemaining = 0;
+        return action;
+    }
+
+    public int getChargeTurnsRemaining() {
+        return chargeTurnsRemaining;
     }
 
     // --- Getters ---
@@ -102,4 +135,19 @@ public abstract class Champion {
     public int getDefensePower() { return defensePower; }
     public Loadout getLoadout() { return loadout; }
     public Arsenal getArsenal() { return arsenal; }
+
+    private class ChargingAction extends Action {
+        public ChargingAction() {
+            super("Charging");
+        }
+
+        @Override
+        public void execute(BattleContext context) {
+            context.getLog().addEntry(
+                context.attacker, null, getName(),
+                context.attacker.getName() + " is charging up.",
+                context.round, BattleLog.EntryType.ACTION
+            );
+        }
+    }
 }

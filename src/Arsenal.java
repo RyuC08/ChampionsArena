@@ -14,8 +14,8 @@ public class Arsenal {
     private final List<BattleModifier> slots;
     private final ModifierVault vault;
 
-    public Arsenal(ModifierVault vault) {
-        this.vault = vault;
+    public Arsenal() {
+        this.vault = ModifierVault.getInstance();
         this.slots = new ArrayList<>();
 
         // Draw one of each type
