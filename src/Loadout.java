@@ -80,7 +80,15 @@ public class Loadout {
      * modifiers. This method should be called at the end of each turn to
      * ensure that the loadout is ready for the next turn. 
      */
-    public void endTurn() {
+    public void endTurn(BattleContext context) {
+        // End the turn for all active modifiers
+        for (BattleModifier mod : getActiveModifiers()) {
+            if (!mod.isExpired()) {
+                mod.onTurnEnd(context);
+                mod.endRound();
+            }
+        }
+
         // Remove expired modifiers
         if (tactic != null && tactic.isExpired()) {
             tactic = null;
@@ -90,12 +98,10 @@ public class Loadout {
             relic = null;
         }
     
-        // Only include the gambit if it is activated
         if (pocketedGambit != null && pocketedGambit.isExpired()) {
             pocketedGambit = null;
         }
-
-        // Clear temporary modifiers
+        
         temporaryModifiers.removeIf(BattleModifier::isExpired);
     }
 

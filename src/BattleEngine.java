@@ -26,33 +26,33 @@ public class BattleEngine {
             round, BattleLog.EntryType.INFO);
 
         while (champA.isAlive() && champB.isAlive()) {
-            log.addEntry(null, null, "Round " + round, "⚔️  Round " + round + " begins! ⚔️", round, BattleLog.EntryType.INFO);
+            log.addEntry(null, null, "Round " + round, "-----⚔️  Round " + round + " begins! ⚔️-----", round, BattleLog.EntryType.INFO);
 
             // Get TurnSubmissions from both players
-            CompletableFuture<TurnSubmission> submissionA = getTurnSubmission(champA, champB);
-            CompletableFuture<TurnSubmission> submissionB = getTurnSubmission(champB, champA);
+            final CompletableFuture<TurnSubmission> submissionA = getTurnSubmission(champA, champB);
+            final CompletableFuture<TurnSubmission> submissionB = getTurnSubmission(champB, champA);
 
             // Get the player's actual turn submissions once they are ready
-            TurnSubmission turnA = submissionA.join();
-            TurnSubmission turnB = submissionB.join();
+            final TurnSubmission turnA = submissionA.join();
+            final TurnSubmission turnB = submissionB.join();
 
             // Apply Loadout Swaps
             applyLoadoutChanges(champA, turnA);
             applyLoadoutChanges(champB, turnB);
 
             // Randomize execution order
-            boolean aFirst = random.nextBoolean(); // is champ A first?
+            final boolean aFirst = random.nextBoolean(); // is champ A first?
 
-            Champion first = aFirst ? champA : champB;
-            Champion second = aFirst ? champB : champA;
+            final Champion first = aFirst ? champA : champB;
+            final Champion second = aFirst ? champB : champA;
 
             // Execute both actions
-            BattleContext context1 = new BattleContext(first, second, round, log);
-            BattleContext context2 = context1.reverse();
+            final BattleContext context1 = new BattleContext(first, second, round, log);
+            final BattleContext context2 = context1.reverse();
 
             // Charge any charging actions
-            Action actionA = first.advanceCharge();
-            Action actionB = second.advanceCharge();
+            final Action actionA = first.advanceCharge();
+            final Action actionB = second.advanceCharge();
 
             // Execute the first champion's action
             if (actionA != null) {
@@ -64,8 +64,8 @@ public class BattleEngine {
                 actionB.execute(context2);
             }
 
-            champA.getLoadout().endTurn();
-            champB.getLoadout().endTurn();
+            first.getLoadout().endTurn(context1);
+            second.getLoadout().endTurn(context2);
 
             // Print out the round log
             Arrays.stream(log.getLog())
@@ -75,8 +75,8 @@ public class BattleEngine {
             round++;
         }
 
-        String winner = champA.isAlive() ? champA.getName() : champB.getName();
-        log.addEntry(null, null, "Victory", winner + " wins the match!", round, BattleLog.EntryType.INFO);
+        final String winner = champA.isAlive() ? champA.getName() : champB.getName();
+        log.addInfoEntry("Victory", winner + " wins the match!", round);
         System.out.println("\n🏆 " + winner + " is victorious! 🏆");
     }
 
@@ -85,7 +85,7 @@ public class BattleEngine {
     }
 
     private void applyLoadoutChanges(Champion champ, TurnSubmission turn) {
-        Loadout loadout = champ.getLoadout();
+        final Loadout loadout = champ.getLoadout();
 
         if (turn.newTactic != null) {
             loadout.swapTactic(turn.newTactic);

@@ -1,22 +1,42 @@
+/**
+ * The current battle context in which a BattleModifier is being employed. The
+ * context includes the current round, the champion that is the wielder of the 
+ * modifier, the enemy champion, and the battle log.
+ */
 public class BattleContext {
-    public final Champion attacker;
-    public final Champion defender;
-    public final int round;
-    private final BattleLog log;
+    public final Champion wielder; // The champion that is the wielder of the modifier
+    public final Champion enemy;  // The enemy champion
+    public final int round;       // The current round of the battle
+    private final BattleLog log;  // The battle log to record actions and events
 
-    public BattleContext(Champion attacker, Champion defender, int round, BattleLog log) {
-        this.attacker = attacker;
-        this.defender = defender;
+    /**
+     * Constructor for BattleContext.
+     * @param wielder The champion that is the wielder of the modifier
+     * @param enemy The enemy champion
+     * @param round The current round of the battle
+     * @param log The battle log to record actions and events
+     */
+    public BattleContext(Champion wielder, Champion enemy, int round, BattleLog log) {
+        this.wielder = wielder;
+        this.enemy = enemy;
         this.round = round;
         this.log = log;
     }
 
-    public boolean isAttacking(Champion champ) {
-        return champ == attacker;
+    /**
+     * @return true if the champion is the attacker weilding the modifier.
+     * @param champ The champion to check
+     */
+    public boolean isAttacker(Champion champ) {
+        return champ == wielder;
     }
 
+    /**
+     * @return true if the champion is the defender weilding the wielder.
+     * @param champ The champion to check
+     */
     public boolean isDefending(Champion champ) {
-        return champ == defender;
+        return champ == enemy;
     }
 
     public BattleLog getLog() {
@@ -24,6 +44,6 @@ public class BattleContext {
     }
 
     public BattleContext reverse() {
-        return new BattleContext(defender, attacker, round, log);
+        return new BattleContext(enemy, wielder, round, log);
     }
 }

@@ -13,9 +13,29 @@ public class BattleLog {
         return entries.toArray(new Entry[0]);
     }
 
-    public void addEntry(Champion actor, Champion target, String actionName,
-                         String description, int round, EntryType type) {
+    public void addEntry(String actionName, String description, int round, EntryType type) {
+        addEntry(null, null, actionName, description, round, type);
+    }
+
+    public void addInfoEntry(String actionName, String description, int round) {
+        addEntry(null, null, actionName, description, round, EntryType.INFO);
+    }
+
+    public void addActionEntry(Champion actor, String actionName, String description, int round) {
+        addEntry(actor, null, actionName, description, round, EntryType.ACTION);
+    }
+
+
+    public void addEntry(Champion actor, String actionName, String description, int round, EntryType type) {
+        addEntry(actor, null, actionName, description, round, type);
+    }
+
+    public void addEntry(Champion actor, Champion target, String actionName, String description, int round, EntryType type) {
         entries.add(new Entry(actor, target, actionName, description, round, type));
+    }
+
+    public void addActionEntry(Champion actor, Champion target, String actionName, String description, int round) {
+        addEntry(actor, target, actionName, description, round, EntryType.ACTION);
     }
 
     public List<Entry> getEntriesByRound(int round) {

@@ -9,41 +9,60 @@ public class TrainingDummy extends Champion {
 
     @Override
     public List<Action> getActions() {
-        return List.of(new Headbutt(), new Shrug());
+        return List.of(new Headbutt(), new Shrug(), new Bandaid());
+    }    
+}
+
+// Sample Action 1
+class Headbutt extends Action {
+    public Headbutt() {
+        super("Headbutt");
     }
 
-    // Sample Action 1
-    private static class Headbutt extends Action {
-        public Headbutt() {
-            super("Headbutt");
-        }
+    @Override
+    public void execute(BattleContext context) {
+        final int baseDamage = 8;
+        final int actualDamage = context.enemy.takeDamage(baseDamage, context);
 
-        @Override
-        public void execute(BattleContext context) {
-            int baseDamage = 8;
-            int actualDamage = context.defender.takeDamage(baseDamage, context);
+        context.getLog().addEntry(
+            context.wielder, context.enemy, getName(),
+            context.wielder.getName() + " headbutts for " + actualDamage + " damage!",
+            context.round, BattleLog.EntryType.ACTION
+        );
+    }
+}
 
-            context.getLog().addEntry(
-                context.attacker, context.defender, getName(),
-                context.attacker.getName() + " headbutts for " + actualDamage + " damage!",
-                context.round, BattleLog.EntryType.ACTION
-            );
-        }
+// Sample Action 2
+class Shrug extends Action {
+    public Shrug() {
+        super("Shrug");
     }
 
-    // Sample Action 2
-    private static class Shrug extends Action {
-        public Shrug() {
-            super("Shrug");
-        }
+    @Override
+    public void execute(BattleContext context) {
+        context.getLog().addEntry(
+            context.wielder, null, getName(),
+            context.wielder.getName() + " shrugs and does nothing.",
+            context.round, BattleLog.EntryType.ACTION
+        );
+    }
+}
 
-        @Override
-        public void execute(BattleContext context) {
-            context.getLog().addEntry(
-                context.attacker, null, getName(),
-                context.attacker.getName() + " shrugs and does nothing.",
-                context.round, BattleLog.EntryType.ACTION
-            );
-        }
+// Sample Action 3
+class Bandaid extends Action {
+    public Bandaid() {
+        super("Bandaid");
+    }
+
+    @Override
+    public void execute(BattleContext context) {
+        final int baseHealing = 5;
+        final int actualHealed = context.wielder.heal(baseHealing, context);
+
+        context.getLog().addEntry(
+            context.wielder, null, getName(),
+            context.wielder.getName() + " slaps on a bandaid and heals " + actualHealed + " HP.",
+            context.round, BattleLog.EntryType.ACTION
+        );
     }
 }
