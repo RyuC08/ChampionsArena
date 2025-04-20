@@ -16,4 +16,13 @@ public abstract class Relic extends BattleModifier {
     public Relic(String name, String description, int maxUses) {
         super(name, description, maxUses);
     }
+
+    /**
+     * Create a new Relic with the given name and description.
+     * @param name The name of the relic.
+     * @param description The description of the relic.
+     */
+    public Relic(String name, String description) {
+        super(name, description, 1);
+    }
 }

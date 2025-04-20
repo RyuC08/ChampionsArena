@@ -29,7 +29,11 @@ public abstract class Gambit extends BattleModifier {
      * Activate the gambit. This method should be called when the player chooses to use the gambit.
      * A Gambit subclass may have immediate effects after being activated or may modifyAttack/modifyDefense.
      */
-    public void activate() {
+    public void activate(BattleContext context) {
+        if (activated) {
+            throw new IllegalStateException("Gambit has already been activated.");
+        }
+        // Set the gambit as activated
         this.activated = true;
     }
 }

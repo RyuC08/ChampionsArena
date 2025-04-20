@@ -54,7 +54,13 @@ public class ModifierVault {
      */
     private ModifierVault() {
         // Initialize the vault with default modifiers
-        // registry.add(MyModifier.class);
+        registry.add(EmberCrystal.class);
+        registry.add(StoneAmulet.class);
+        registry.add(Chargebreaker.class);
+        registry.add(LastLight.class);
+        registry.add(AdrenalSurge.class);
+        registry.add(RecklessBurst.class);
+
     }
 
     /**
