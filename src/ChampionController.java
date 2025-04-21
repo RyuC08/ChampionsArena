@@ -1,6 +1,11 @@
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * The ChampionController interface defines the methods for player interactions
+ * in the Champions Arena game. It allows players to choose champions and plan
+ * their turns during the battle.
+ */
 public interface ChampionController {
     /**
      * Allow a player to choose a champion from a list of available champions.

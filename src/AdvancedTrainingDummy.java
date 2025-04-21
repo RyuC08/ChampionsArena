@@ -1,4 +1,5 @@
 import java.util.List;
+import java.util.ArrayList;
 
 /**
  * AdvancedTrainingDummy is a Champion that serves as a training dummy for players to practice against.

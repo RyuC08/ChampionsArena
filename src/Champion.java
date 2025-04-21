@@ -51,7 +51,7 @@ public abstract class Champion {
         this.isCharging = false;
         this.chargeTurnsRemaining = 0;
     }
-
+    
     /**
      * @return The list of actions that this Champion can perform.
      */
@@ -284,7 +284,9 @@ class ChargingAction extends Action {
 }
 
 /**
- * 
+ * A default action that allows the champion to play a gambit that
+ * they have pocketed. The gambit is removed from the pocket
+ * and activated. If no gambit is pocketed, the action does nothing.
  */
 class PlayGambit extends Action {
     public PlayGambit() {
@@ -293,25 +295,24 @@ class PlayGambit extends Action {
 
     @Override
     public void execute(BattleContext context) {
-        Loadout loadout = context.bearer.getLoadout();
+        Loadout loadout = context.wielder.getLoadout();
         Gambit pocketed = loadout.getPocketedGambit();
 
         if (pocketed == null) {
             context.getLog().addEntry(
-                context.bearer, null, getName(),
-                context.bearer.getName() + " tries to play a Gambit... but none is ready!",
+                context.wielder, null, getName(),
+                context.wielder.getName() + " tries to play a Gambit... but none is ready!",
                 context.round, BattleLog.EntryType.INFO
             );
             return;
         }
 
         pocketed.activate(context);
-        loadout.addModifier(pocketed);
         loadout.swapPocketedGambit(null); // remove it from pocket
 
         context.getLog().addEntry(
-            context.bearer, null, pocketed.getName(),
-            context.bearer.getName() + " activates the Gambit: " + pocketed.getName() + "!",
+            context.wielder, null, pocketed.getName(),
+            context.wielder.getName() + " activates the Gambit: " + pocketed.getName() + "!",
             context.round, BattleLog.EntryType.MODIFIER
         );
     }

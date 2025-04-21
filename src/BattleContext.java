@@ -39,10 +39,17 @@ public class BattleContext {
         return champ == enemy;
     }
 
+    /**
+     * @return the battle log for the current battle context
+     */
     public BattleLog getLog() {
         return log;
     }
 
+    /**
+     * @return a new BattleContext with the roles of the champions reversed, ie for
+     * the second champion to be the wielder and the first champion to be the enemy.
+     */
     public BattleContext reverse() {
         return new BattleContext(enemy, wielder, round, log);
     }

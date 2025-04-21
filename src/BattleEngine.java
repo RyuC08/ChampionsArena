@@ -2,6 +2,11 @@ import java.util.concurrent.CompletableFuture;
 import java.util.Arrays;
 import java.util.Random;
 
+/**
+ * The BattleEngine class is responsible for managing the battle between two champions.
+ * It handles the turn-based mechanics, including executing actions, applying loadout changes,
+ * and logging the battle events.
+ */
 public class BattleEngine {
     private final Champion champA;
     private final Champion champB;
@@ -12,6 +17,14 @@ public class BattleEngine {
     private int round = 1;
     private final Random random = new Random();
 
+    /**
+     * Constructor for the BattleEngine.
+     * @param champA The first champion.
+     * @param champB The second champion.
+     * @param log The battle log to record events.
+     * @param vault The vault containing modifiers.
+     * @param controller The controller for player interactions.
+     */
     public BattleEngine(Champion champA, Champion champB, BattleLog log, ModifierVault vault, ChampionController controller) {
         this.champA = champA;
         this.champB = champB;
@@ -20,6 +33,10 @@ public class BattleEngine {
         this.controller = controller;
     }
 
+    /**
+     * Starts the battle between the two champions.
+     * The battle continues until one champion is defeated.
+     */
     public void runMatch() {
         log.addEntry(null, null, "Battle Start",
             champA.getName() + " vs. " + champB.getName(),
@@ -80,10 +97,21 @@ public class BattleEngine {
         System.out.println("\n🏆 " + winner + " is victorious! 🏆");
     }
 
+    /**
+     * Gets the TurnSubmission for the current turn.
+     * @param self The champion whose turn it is.
+     * @param opponent The opponent champion.
+     * @return A CompletableFuture containing the TurnSubmission for the current turn.
+     */
     private CompletableFuture<TurnSubmission> getTurnSubmission(Champion self, Champion opponent) {
         return controller.planTurn(self, opponent, vault);
     }
 
+    /**
+     * Applies the loadout changes based on the TurnSubmission.
+     * @param champ The champion whose loadout is being modified.
+     * @param turn The TurnSubmission containing the changes.
+     */
     private void applyLoadoutChanges(Champion champ, TurnSubmission turn) {
         final Loadout loadout = champ.getLoadout();
 

@@ -26,6 +26,18 @@ public class Loadout {
         return pocketedGambit;
     }
 
+    public String getTacticName() {
+        return tactic != null ? tactic.getName() : "None";
+    }
+
+    public String getRelicName() {
+        return relic != null ? relic.getName() : "None";
+    }
+
+    public String getGambitName() {
+        return pocketedGambit != null ? pocketedGambit.getName() : "None";
+    }
+
     // --- Swaps that return the old item ---
     public Tactic swapTactic(Tactic newTactic) {
         Tactic old = this.tactic;

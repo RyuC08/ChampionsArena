@@ -2,6 +2,11 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * The WebChampionController class implements the ChampionController interface
+ * for a web-based version of the Champions Arena game. It allows players to
+ * choose champions and plan their turns using web elements.
+ */
 public class WebChampionController implements ChampionController {
     public WebChampionController() {
         throw new UnsupportedOperationException("Not yet implemented");

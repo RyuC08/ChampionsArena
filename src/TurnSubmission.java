@@ -1,3 +1,8 @@
+/**
+ * A class that encapsulates the player's choices during their turn in the game.
+ * It includes the selected action, either a new tactic, relic, or gambit to swap,
+ * and a battle modifier to discard.
+ */
 public class TurnSubmission {
     public final Action selectedAction;
     public final Tactic newTactic;

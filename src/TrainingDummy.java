@@ -1,4 +1,5 @@
 import java.util.List;
+import java.util.ArrayList;
 
 public class TrainingDummy extends Champion {
     public static final String NAME = "Training Dummy";
