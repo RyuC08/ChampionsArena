@@ -67,6 +67,9 @@ public class ConsoleChampionController implements ChampionController {
      */
     @Override
     public CompletableFuture<TurnSubmission> planTurn(Champion self, Champion opponent, ModifierVault vault) {
+        // Refill the arsenal with new modifiers if it has empty slots
+        self.getArsenal().refill();
+
         System.out.println("\n" + self.getName() + "'s Turn vs " + opponent.getName());
         System.out.print("   Current Health:");
         System.out.printf("  %s: %d HP", self.getName(), self.getCurrentHealth());
@@ -77,8 +80,6 @@ public class ConsoleChampionController implements ChampionController {
                 self.getLoadout().getGambitName());
         System.out.println();
 
-        // Refill the arsenal with new modifiers if it has empty slots
-       self.getArsenal().refill();
 
         BattleModifier discard = chooseDiscard(self.getArsenal().getSlots());
 
@@ -86,7 +87,7 @@ public class ConsoleChampionController implements ChampionController {
         Relic newRelic = null;
         Gambit newGambit = null;
 
-        System.out.println("\nYou may swap ONE modifier this turn:");
+        System.out.println("\nYou may swap ONE modifier into your loadout this turn:");
         List<BattleModifier> arsenal = self.getArsenal().getSlots();
 
         for (int i = 0; i < arsenal.size(); i++) {
@@ -183,11 +184,13 @@ public class ConsoleChampionController implements ChampionController {
     
         int choice = getIntInput("Enter number: ", 0, filtered.size() - 1);
         return filtered.get(choice);
-    }
-    
-    
-    
+    }    
 
+    /**
+     * Allows the user to choose an action from a list of available actions.
+     * @param actions the list of available actions
+     * @return the chosen action
+     */
     private Action chooseAction(List<Action> actions) {
         System.out.println("\nChoose an Action:");
         for (int i = 0; i < actions.size(); i++) {
@@ -197,11 +200,19 @@ public class ConsoleChampionController implements ChampionController {
         return actions.get(choice);
     }
 
+    /**
+     * Allows the user to choose a modifier to discard from their arsenal.
+     * @param slots the list of available modifiers
+     * @return the chosen modifier to discard, or null if none is chosen
+     */
     private BattleModifier chooseDiscard(List<BattleModifier> slots) {
         System.out.println("\nDiscard one modifier?");
 
         for (int i = 0; i < slots.size(); i++) {
-            System.out.println("  [" + i + "] " + slots.get(i).getName());
+            System.out.println("  [" + i + "] " + slots.get(i).getName() + (
+                    slots.get(i) instanceof Tactic ? " (Tactic)" :
+                    slots.get(i) instanceof Relic ? " (Relic)" :
+                    slots.get(i) instanceof Gambit ? " (Gambit)" : ""));
         }
         System.out.println("  [X] Skip");
 

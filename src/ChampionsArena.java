@@ -12,19 +12,26 @@ public class ChampionsArena {
         if (args.length < 1) {
             System.err.println("Usage: java ChampionsArena <controller_type>");
             System.err.println("Available controller types: console, gui, web");
-            return;
+            args = new String[] {"console"};
         }
-
+        
         // Determine the controller type based on command line argument
-        ChampionController controller = switch(args[0]) {
-            case "console" -> new ConsoleChampionController();
-            case "gui" -> new GuiChampionController();
-            case "web" -> new WebChampionController();
-            default -> throw new IllegalArgumentException("Unknown controller type: " + args[0]);
+        ChampionController controller = null;
+        switch(args[0]) {
+            case "gui":
+                controller = new GuiChampionController();
+                break;
+            case "web":
+                controller = new WebChampionController();
+                break;
+            default:
+            case "console":
+                controller = new ConsoleChampionController();
+                break;
         };
 
         // Load champions from the specified folder
-        List<Class<? extends Champion>> championClasses = loadChampionClasses("arena/");
+        List<Class<? extends Champion>> championClasses = loadChampionClasses("./");
         championClasses.add(TrainingDummy.class);
         championClasses.add(AdvancedTrainingDummy.class);
 
@@ -35,7 +42,7 @@ public class ChampionsArena {
         }
 
         // Initialize the vault with modifiers
-        ModifierVault vault = ModifierVault.initialize("arena/");
+        ModifierVault vault = ModifierVault.initialize("./");
 
         // Allow players to choose their champions
         CompletableFuture<Champion> playerOneFuture = controller.chooseChampion("Player 1", championClasses);

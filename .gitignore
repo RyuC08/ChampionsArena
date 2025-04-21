@@ -1,6 +1,7 @@
 # Compiled class file
 *.class
 target/
+champions-arena.jar
 
 # Log file
 *.log

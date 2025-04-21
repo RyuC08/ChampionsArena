@@ -1,5 +1,6 @@
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.lang.reflect.Field;
 
 /**
  * The ChampionController interface defines the methods for player interactions
@@ -31,7 +32,7 @@ public interface ChampionController {
      */
     public default String getChampionDisplayName(Class<? extends Champion> clazz) {
         try {
-            var field = clazz.getField("NAME");
+            Field field = clazz.getField("NAME");
             if (java.lang.reflect.Modifier.isStatic(field.getModifiers())) {
                 Object value = field.get(null);
                 if (value instanceof String) {
