@@ -55,7 +55,9 @@ public abstract class Champion {
     /**
      * @return The list of actions that this Champion can perform.
      */
-    public abstract List<Action> getActions(); 
+    public List<Action> getActions() {
+        return List.of(new PlayGambit());
+    }
 
     /**
      * Set the action that this Champion has locked in to perform this turn or charge for a future turn.
@@ -277,6 +279,40 @@ class ChargingAction extends Action {
             context.wielder, null, getName(),
             context.wielder.getName() + " is charging up.",
             context.round, BattleLog.EntryType.ACTION
+        );
+    }
+}
+
+/**
+ * 
+ */
+class PlayGambit extends Action {
+    public PlayGambit() {
+        super("Play Gambit");
+    }
+
+    @Override
+    public void execute(BattleContext context) {
+        Loadout loadout = context.bearer.getLoadout();
+        Gambit pocketed = loadout.getPocketedGambit();
+
+        if (pocketed == null) {
+            context.getLog().addEntry(
+                context.bearer, null, getName(),
+                context.bearer.getName() + " tries to play a Gambit... but none is ready!",
+                context.round, BattleLog.EntryType.INFO
+            );
+            return;
+        }
+
+        pocketed.activate(context);
+        loadout.addModifier(pocketed);
+        loadout.swapPocketedGambit(null); // remove it from pocket
+
+        context.getLog().addEntry(
+            context.bearer, null, pocketed.getName(),
+            context.bearer.getName() + " activates the Gambit: " + pocketed.getName() + "!",
+            context.round, BattleLog.EntryType.MODIFIER
         );
     }
 }

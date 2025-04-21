@@ -29,7 +29,16 @@ public class AdvancedTrainingDummy extends Champion {
      */
     @Override
     public List<Action> getActions() {
-        return List.of(new Jab(), new Brace(), new WindUpSlam(), new PoisonDart());
+        // Start with the default Champion actions (like PlayGambit)
+        List<Action> actions = new ArrayList<>(super.getActions());
+
+        // Add this Champion's custom actions
+        actions.add(new Jab());
+        actions.add(new Brace());
+        actions.add(new WindUpSlam());
+        actions.add(new PoisonDart());
+
+        return actions;
     }
 }
 

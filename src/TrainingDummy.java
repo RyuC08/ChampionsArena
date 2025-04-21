@@ -3,22 +3,47 @@ import java.util.List;
 public class TrainingDummy extends Champion {
     public static final String NAME = "Training Dummy";
 
+    /**
+     * Constructor for TrainingDummy.
+     * The dummy has a max health of 50, an attack power of 5, and a defense power of 5.
+     */
     public TrainingDummy() {
         super(NAME, 5, 5, 50);
     }
 
+    /**
+     * Returns a list of actions that the TrainingDummy can perform.
+     * The actions include a Headbutt, a Shrug action that does nothing,
+     * and a Bandaid action that heals the champion.
+     * @return A list of actions available to the TrainingDummy.
+     */
     @Override
     public List<Action> getActions() {
-        return List.of(new Headbutt(), new Shrug(), new Bandaid());
-    }    
+        // Start with the default Champion actions (like PlayGambit)
+        List<Action> actions = new ArrayList<>(super.getActions());
+
+        // Add this Champion's custom actions
+        actions.add(new Headbutt());
+        actions.add(new Shrug());
+        actions.add(new Bandaid());
+
+        return actions;
+    }
 }
 
-// Sample Action 1
+/**
+ * A sample action that the TrainingDummy can perform -- A headbutt that deals damage.
+ */
 class Headbutt extends Action {
     public Headbutt() {
         super("Headbutt");
     }
 
+    /**
+     * Executes the Headbutt action.
+     * This action deals 8 damage to the opponent.
+     * @param context The context of the battle, including the wielder and enemy.
+     */
     @Override
     public void execute(BattleContext context) {
         final int baseDamage = 8;
@@ -32,12 +57,19 @@ class Headbutt extends Action {
     }
 }
 
-// Sample Action 2
+/**
+ * A sample action that the TrainingDummy can perform -- A shrug that does nothing.
+ */
 class Shrug extends Action {
     public Shrug() {
         super("Shrug");
     }
 
+    /**
+     * Executes the Shrug action.
+     * This action does nothing and logs a message indicating that the champion did nothing.
+     * @param context The context of the battle, including the wielder and enemy.
+     */
     @Override
     public void execute(BattleContext context) {
         context.getLog().addEntry(
@@ -48,12 +80,19 @@ class Shrug extends Action {
     }
 }
 
-// Sample Action 3
+/**
+ * A sample action that the TrainingDummy can perform -- A bandaid that heals the champion.
+ */
 class Bandaid extends Action {
     public Bandaid() {
         super("Bandaid");
     }
 
+    /**
+     * Executes the Bandaid action.
+     * This action heals the champion for a fixed amount of health.
+     * @param context The context of the battle, including the wielder and enemy.
+     */
     @Override
     public void execute(BattleContext context) {
         final int baseHealing = 5;
