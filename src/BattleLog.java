@@ -19,6 +19,7 @@ public class BattleLog {
     }
 
     /**
+     * Get the battle log entries.
      * @return An array of Entry objects representing the log.
      */
     public Entry[] getLog() {
@@ -116,11 +117,29 @@ public class BattleLog {
      * to the console for debugging or logging purposes.
      */
     public static class Entry {
+        /**
+         * The champion who performed the action.
+         */
         public final Champion actor;
+        /**
+         * The champion who was targeted by the action.
+         */
         public final Champion target;
+        /**
+         * A description of the action.
+         */
         public final String description;
+        /**
+         * The name of the action performed.
+         */
         public final String actionName;
+        /**
+         * The round in which the action occurred.
+         */        
         public final int round;
+        /**
+         * The type of entry (ACTION, DAMAGE, MODIFIER, STATUS, INFO).
+         */
         public final EntryType type;
 
         /**
@@ -156,10 +175,25 @@ public class BattleLog {
      * It includes ACTION, DAMAGE, MODIFIER, STATUS, and INFO.
      */
     public static enum EntryType {
-        ACTION,     // "Frostmare uses Fire Fang"
-        DAMAGE,     // "Infernosaur takes 12 damage"
-        MODIFIER,   // "Shield Wall reduces damage by 4"
-        STATUS,     // "Burn applied to Frostmare"
-        INFO        // "Round 3 begins"
+        /**
+         * The type of entry that represents an action taken by a champion.
+         */
+        ACTION,
+        /**
+         * The type of entry that represents damage dealt to a champion.
+         */
+        DAMAGE,
+        /**
+         * The type of entry that represents a modifier applied to a champion.
+         */
+        MODIFIER,
+        /**
+         * The type of entry that represents a status effect applied to a champion.
+         */
+        STATUS,
+        /**
+         * The type of entry that represents an informational message.
+         */
+        INFO
     }
 }

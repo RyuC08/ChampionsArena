@@ -35,6 +35,7 @@ public class ModifierVault {
      *                   If null or empty, only default modifiers will be loaded.
      * @throws IllegalStateException if the vault has already been initialized.
      * @throws IllegalArgumentException if the folderPath is invalid.
+     * @return The instance of ModifierVault.
      */
     public static ModifierVault initialize(String folderPath) {
         if (instance != null) {
@@ -84,17 +85,30 @@ public class ModifierVault {
         }
     }
 
+    /**
+     * Register a new battle modifier class to the vault.
+     * @param clazz The class of the battle modifier to register.
+     */
     public void registerBattleModifier(Class<? extends BattleModifier> clazz) {
         if (clazz != null && !registry.contains(clazz)) {
             registry.add(clazz);
         }
     }
     
+    /**
+     * Draw a random battle modifier from the vault.
+     * @return A random instance of a battle modifier, or null if the vault is empty.
+     */
     public BattleModifier drawRandom() {
         if (registry.isEmpty()) return null;
         return instantiate(registry.get(random.nextInt(registry.size())));
     }
 
+    /**
+     * Draw a random battle modifier of a specific type from the vault.
+     * @param type The class of the battle modifier type to draw (ie Tactic.class).
+     * @return A random instance of the specified battle modifier type, or null if none are found.
+     */
     public BattleModifier drawRandomOfType(Class<? extends BattleModifier> type) {
         List<Class<? extends BattleModifier>> matches = registry.stream()
             .filter(c -> type.isAssignableFrom(c))
@@ -104,6 +118,11 @@ public class ModifierVault {
         return instantiate(matches.get(random.nextInt(matches.size())));
     }
 
+    /**
+     * Safely instantiate a battle modifier class.
+     * @param clazz The class of the battle modifier to instantiate.
+     * @return A new instance of the specified battle modifier class, or null if instantiation fails.
+     */
     private BattleModifier instantiate(Class<? extends BattleModifier> clazz) {
         try {
             return clazz.getDeclaredConstructor().newInstance();

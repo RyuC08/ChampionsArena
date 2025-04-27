@@ -1,3 +1,28 @@
+/**
+ * An abstract class representing a battle modifier that can be applied to
+ * a character in a battle. This class provides a structure for defining
+ * various modifiers, including their name, description, duration, and
+ * effects on attack, defense, and healing.
+ * Each modifier has a name, description, and a number of uses. The
+ * duration of the modifier decreases each time it is used. The modifier
+ * can modify the attack, defense, and healing values based on its
+ * specific effects. The modifier can also be applied to the wielder or
+ * the enemy, depending on the context of the battle.
+ * The modifier can be expired when its duration reaches zero.
+ * 
+ * The onTurnEnd method can be overridden by subclasses to define
+ * specific behavior at the end of each turn.
+ * 
+ * The effectUsedThisTurn method should be called when the modifier is
+ * applied to indicate that it has been used this turn.
+ * 
+ * The endRound method should be called at the end of each round to
+ * decrease the duration of the modifier if it has been used.
+ * 
+ * The modifyAttack, modifyDefense, and modifyHealing methods can be
+ * overridden by subclasses to define specific behavior for modifying
+ * attack, defense, and healing values.
+ */
 public abstract class BattleModifier {
     private final String name;
     private final String description;
@@ -21,6 +46,7 @@ public abstract class BattleModifier {
     }
 
     /**
+     * Get the name of this modifier.
      * @return The name of this modifier.
      */
     public final String getName() {
@@ -28,6 +54,7 @@ public abstract class BattleModifier {
     }
 
     /**
+     * Get the description of this modifier.
      * @return The description of this modifier.
      */
     public final String getDescription() {
@@ -35,6 +62,7 @@ public abstract class BattleModifier {
     }
 
     /**
+     * Get the number of uses remaining for this modifier.
      * @return The number of uses remaining for this modifier.
      */
     public final int getDuration() {
@@ -42,6 +70,7 @@ public abstract class BattleModifier {
     }
 
     /**
+     * Get the maximum number of uses for this modifier.
      * @return The maximum number of uses for this modifier.
      */
     public final int getMaxDuration() {
@@ -50,6 +79,7 @@ public abstract class BattleModifier {
 
 
     /**
+     * Check if the modifier has worn out and no longer has any effect.
      * @return true if the modifier has worn out and no longer has any effect.
      */
     public final boolean isExpired() {

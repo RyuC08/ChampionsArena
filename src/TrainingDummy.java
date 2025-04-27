@@ -1,7 +1,17 @@
 import java.util.List;
 import java.util.ArrayList;
 
+/**
+ * The TrainingDummy class represents a champion that serves as a training dummy for players to practice against.
+ * It has a set of actions that simulate a real battle scenario.
+ * The actions include a Headbutt, a Shrug action that does nothing,
+ * and a Bandaid action that heals the champion.
+ * The TrainingDummy has a max health of 50, an attack power of 5, and a defense power of 5.
+ */
 public class TrainingDummy extends Champion {
+    /**
+     * The name of the TrainingDummy champion.
+     */
     public static final String NAME = "Training Dummy";
 
     /**

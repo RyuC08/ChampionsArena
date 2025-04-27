@@ -7,7 +7,20 @@ import java.util.concurrent.CompletableFuture;
  * It initializes the game, loads champions, and starts the battle between two players.
  */
 public class ChampionsArena {
+    /**
+     * An unused constructor for the ChampionsArena class.
+     * This constructor is not implemented and will throw an exception if called.
+     */
+    public ChampionsArena() {
+        // Constructor for the ChampionsArena class
+        throw new UnsupportedOperationException("Not implemented");
+    }
 
+    /**
+     * The main method is the entry point for the Champions Arena game.
+     * It initializes the game, loads champions, and starts the battle between two players.
+     * @param args Command line arguments to specify the controller type (console, gui, web).
+     */
     public static void main(String[] args) {
         if (args.length < 1) {
             System.err.println("Usage: java ChampionsArena <controller_type>");

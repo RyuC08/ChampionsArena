@@ -32,6 +32,7 @@ public abstract class Action {
     }
 
     /**
+     * Get the name of this action.
      * @return The name of this action.
      */
     public final String getName() {
@@ -39,6 +40,7 @@ public abstract class Action {
     }
 
     /**
+     * Check if this action requires charging before it will be executed
      * @return true if this action requires charging before it will be executed.
      */
     public final boolean needsCharging() {
@@ -46,6 +48,7 @@ public abstract class Action {
     }
 
     /**
+     * Get the number of turns required to charge this action before it will be
      * @return The number of turns required to charge this action before it will be
      *          executed.
      */

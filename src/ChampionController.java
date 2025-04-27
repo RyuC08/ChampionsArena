@@ -10,6 +10,7 @@ import java.lang.reflect.Field;
 public interface ChampionController {
     /**
      * Allow a player to choose a champion from a list of available champions.
+     * @param playerName The name of the player choosing the champion.
      * @param availableChampions A list of available champions to choose from.
      * @return a CompletableFuture that will complete with the player's chosen champion
      */

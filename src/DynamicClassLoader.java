@@ -84,6 +84,7 @@ public class DynamicClassLoader {
     }
 
     /**
+     * Returns a list of all loaded classes.
      * @return A list of loaded classes.
      */
     public List<Class<?>> getAllClasses() {

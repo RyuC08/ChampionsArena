@@ -19,6 +19,7 @@ public abstract class Gambit extends BattleModifier {
     }
 
     /**
+     * Check if the gambit is activated.
      * @return true if the gambit is activated, false otherwise.
      */
     public final boolean isActivated() {
@@ -28,6 +29,7 @@ public abstract class Gambit extends BattleModifier {
     /**
      * Activate the gambit. This method should be called when the player chooses to use the gambit.
      * A Gambit subclass may have immediate effects after being activated or may modifyAttack/modifyDefense.
+     * @param context The context of the battle, including the wielder and enemy.
      */
     public void activate(BattleContext context) {
         if (activated) {

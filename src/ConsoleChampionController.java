@@ -5,10 +5,22 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.IntStream;
 
+/**
+ * The ConsoleChampionController class implements the ChampionController interface
+ * for a console-based version of the Champions Arena game. It allows players to
+ * choose champions and plan their turns using console input.
+ */
 public class ConsoleChampionController implements ChampionController {
-
     private final Scanner scanner = new Scanner(System.in);
 
+    /**
+     * Constructor for the ConsoleChampionController.
+     * This constructor initializes the controller for console-based interactions.
+     */
+    public ConsoleChampionController() {
+        // No initialization needed for console input
+    }
+    
     /**
      * Allow the user to choose a champion from the available options. This
      * method uses reflection to create an instance of the chosen champion class.

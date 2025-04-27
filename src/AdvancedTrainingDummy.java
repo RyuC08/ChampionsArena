@@ -11,6 +11,9 @@ import java.util.ArrayList;
  * and the Wind-Up Slam deals 20 damage after charging for 1 round.
  */
 public class AdvancedTrainingDummy extends Champion {
+    /**
+     * The name of the AdvancedTrainingDummy champion.
+     */
     public static final String NAME = "Advanced Training Dummy";
 
     /**

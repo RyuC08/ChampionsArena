@@ -8,6 +8,10 @@ import java.util.concurrent.CompletableFuture;
  * It allows players to choose champions and plan their turns using GUI elements.
  */
 public class GuiChampionController implements ChampionController {
+    /**
+     * Constructor for the GuiChampionController.
+     * This constructor initializes the controller for GUI-based interactions.
+     */
     public GuiChampionController() {
         throw new UnsupportedOperationException("Not yet implemented");
     }

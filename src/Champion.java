@@ -53,6 +53,7 @@ public abstract class Champion {
     }
     
     /**
+     * Get the list of actions that this Champion can perform.
      * @return The list of actions that this Champion can perform.
      */
     public List<Action> getActions() {
@@ -62,6 +63,7 @@ public abstract class Champion {
     /**
      * Set the action that this Champion has locked in to perform this turn or charge for a future turn.
      * If an action is already locked in, this method does nothing.
+     * @param action The action to lock in
      */
     public void lockInAction(Action action) {
         if (this.lockedInAction == null) {
@@ -72,6 +74,7 @@ public abstract class Champion {
     }
 
     /** 
+     * Get the action that this Champion has locked in to perform this turn or charge for a future turn.
      * @return The action that this Champion has locked in to perform this turn or is charging for a future turn.
      */
     public Action getLockedInAction() {
@@ -173,6 +176,7 @@ public abstract class Champion {
     }
     
     /**
+     * Check if the Champion is alive.
      * @return true if the Champion is alive (currentHealth > 0)
      */
     public final boolean isAlive() {
@@ -180,6 +184,7 @@ public abstract class Champion {
     }
 
     /**
+     * Check if the Champion is currently charging an action.
      * @return true if the Champion is currently charging an action
      */
     public boolean isCharging() {
@@ -217,6 +222,7 @@ public abstract class Champion {
     }
 
     /**
+     * Get the number of turns remaining until the selected action is charged.
      * @return The number of turns remaining until the charge is complete
      */
     public int getChargeTurnsRemaining() {
@@ -224,37 +230,44 @@ public abstract class Champion {
     }
 
     /**
+     * Get the Champion's name
      * @return The Champion's name
      */
     public String getName() { return name; }
 
     /**
+     * Get the Champion's maximum health
      * @return The Champion's maximum health
      */
     public int getMaxHealth() { return maxHealth; }
 
     /**
+     * Get the Champion's current health
      * @return The Champion's current health
      */
     public int getCurrentHealth() { return currentHealth; }
     
     /**
+      Get the champion's current attack power.
      * @return The Champion's attack power
      */
     public int getAttackPower() { return attackPower; }
 
     /**
+     * Get the Champion's defense power
      * @return The Champion's defense power
      */
     public int getDefensePower() { return defensePower; }
 
     /**
-     * @return The Champion's loadout - the items that are currently in play
+     * Get the Champion's loadout - the items that are currently in play
+     * @return The Champion's loadout
      */
     public Loadout getLoadout() { return loadout; }
     
     /**
-     * @return The Champion's arsenal - the items that can be swapped in and out of the loadout
+     * Get the Champion's arsenal - the items that can be swapped in and out of the loadout
+     * @return The Champion's arsenal 
      */
     public Arsenal getArsenal() { return arsenal; }
 }
